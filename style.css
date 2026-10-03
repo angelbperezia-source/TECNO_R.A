@@ -1,0 +1,68 @@
+/* Tipografía para la identidad tecnológica de TECNO R.A. */
+:root {
+    font-family: "DM Sans", sans-serif;
+    color: #18212b;
+}
+
+body {
+    margin: 0;
+    font-family: "DM Sans", sans-serif;
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+.logo {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+h1 {
+    letter-spacing: -0.04em;
+}
+
+h2,
+h3 {
+    letter-spacing: -0.025em;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+.contactos-directos {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #dce4ec;
+    border-radius: 1rem;
+    background: #f5f8fb;
+}
+
+.contactos-directos h3 {
+    margin-top: 0;
+}
+
+.contactos-directos ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 0.75rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.contactos-directos a {
+    color: #1463a5;
+    overflow-wrap: anywhere;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+}
+
+.contactos-directos a:hover,
+.contactos-directos a:focus-visible {
+    color: #0c3f6b;
+}
