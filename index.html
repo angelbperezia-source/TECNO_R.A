@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECNO R.A</title>
+    <!-- Enlace al archivo CSS (se completará con la identidad visual del equipo de marketing) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER / NAVEGACIÓN -->
+    <header>
+        <nav id="navbar">
+            <div class="logo">
+                <!-- TODO: Insertar logo definitivo de Marketing -->
+                <span>TECNO R.A</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- SECCIÓN INICIO / HERO -->
+        <section id="inicio">
+            <h1>Reparación Profesional de Celulares</h1>
+            <p>Soluciones rápidas y garantizadas para tu dispositivo.</p>
+            <a href="#contacto" class="btn-principal">Pedir Presupuesto</a>
+        </section>
+
+        <!-- SECCIÓN SERVICIOS -->
+        <section id="servicios">
+            <h2>Nuestros Servicios</h2>
+            <div class="grid-servicios">
+                <!-- TODO: Agregar más tarjetas de servicios según la entrevista -->
+                <div class="card">
+                    <h3>Cambio de Módulos</h3>
+                    <p>Pantallas rotas o táctil dañado.</p>
+                </div>
+                <div class="card">
+                    <h3>Cambio de Batería</h3>
+                    <p>Baja duración o fallas de carga.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CONTACTO Y PRESUPUESTO -->
+        <section id="contacto">
+            <h2>Solicitá tu Presupuesto</h2>
+            <form id="form-presupuesto">
+                <label for="nombre">Nombre y Apellido:</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="modelo">Modelo del Celular:</label>
+                <input type="text" id="modelo" name="modelo" required>
+
+                <label for="problema">Describí el problema:</label>
+                <textarea id="problema" name="problema" rows="4" required></textarea>
+
+                <button type="submit" class="btn-enviar">Enviar Consulta</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 - TECNO R.A[cite: 2]. Proyecto U.E.G.P. Nº 72 Cacique Pelayo[cite: 1].</p>
+    </footer>
+
+    <!-- Enlace al script de JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
