@@ -28,3 +28,34 @@ Instagram, Facebook y ubicación.
 preparada con tres espacios y controles para agregar trabajos más adelante.
  El carrusel avanza automáticamente cuando la página está activa; se pausa al pasar el cursor,
 al enfocarlo o si el dispositivo prefiere movimiento reducido.
+----------------------------------------------------------------------
+Ahora la página tiene una presentación centrada, tipografía fluida, colores azul y morado, sombras sutiles y animaciones suaves.
+
+Reubiqué los iconos de contacto en una fila equilibrada y mantuve sus enlaces funcionales. 
+ Ajusté la navegación, el formulario y las secciones para móviles y computadoras, incluyendo iPhone y Android; también añadí soporte para movimiento reducido.
+
+diseño en tamaños de 320, 390 y 1440 px; no se desborda el contenido. 
+ No se encontraron errores en index.html, style.css ni script.js.
+ -----------------------------------------------------------------------------
+ PANEL DEL ADMINISTRADOR LOCAL
+ El panel administrativo ahora tiene tres áreas separadas:
+
+Reparaciones: permite cambiar el estado entre recibido, diagnóstico, espera de repuesto, en reparación, listo para retirar y entregado.
+Stock: permite agregar accesorios y actualizar existencias.
+Ventas y pedidos: registra ventas, pedidos de accesorios y servicios de desbloqueo de cuenta Google. Las ventas descuentan stock; los pedidos lo descuentan al marcarlos realizados.
+
+detalles a tener encuenta _ También agregué al sitio los servicios de accesorios y asistencia con cuentas Google.
+Probé los flujos de cambio de estado, carga de stock, venta, entrega de pedido y registro del servicio Google.
+Los diagnósticos no reportan errores.Los registros se guardan en localStorage de ese navegador, no se comparten entre dispositivos y el acceso administrativo sigue siendo de demostración, no seguridad real. 
+Cambios en index.html, style.css y javascript.js.
+
+------------CONFIGURACIONES DE PANTALLA---------------
+
+adapté el panel para celulares. En pantallas angostas, las tablas se muestran como tarjetas con cada dato identificado, así no hace falta desplazarse horizontalmente para leerlas. También ajusté las pestañas para poder deslizar entre ellas y amplié los controles para que sean más cómodos de tocar.
+
+Probé el panel a 320 px y 375 px de ancho; no genera desplazamiento horizontal de toda la página. Los cambios están en style.css y script.js. No se encontraron errores.
+
+El diseño móvil se mantiene; en tablets las tablas del panel también se muestran como tarjetas, y en computadoras el panel aprovecha mejor el espacio y las tablas se presentan completas cuando hay ancho suficiente.
+
+Los ajustes están en style.css. No se encontraron errores.
+----------------------------------------------------------------------------

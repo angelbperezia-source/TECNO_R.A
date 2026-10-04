@@ -14,7 +14,7 @@
 <body>
 
     <!-- HEADER / NAVEGACIÓN -->
-    <header>
+    <header id="sitio-header">
         <nav id="navbar">
             <div class="logo">
                 <span>TECNO R.A</span>
@@ -28,7 +28,7 @@
     </header>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main>
+    <main id="sitio-publico">
         <!-- SECCIÓN INICIO / HERO -->
         <section id="inicio">
             <h1>Reparación Profesional de Celulares</h1>
@@ -47,6 +47,14 @@
                 <div class="card">
                     <h3>Cambio de Batería</h3>
                     <p>Baja duración o fallas de carga.</p>
+                </div>
+                <div class="card">
+                    <h3>Desbloqueo de cuenta Google</h3>
+                    <p>Consultá por asistencia para recuperar el acceso a tu dispositivo.</p>
+                </div>
+                <div class="card">
+                    <h3>Accesorios y pedidos</h3>
+                    <p>Cargadores, auriculares y otros accesorios disponibles por consulta.</p>
                 </div>
             </div>
         </section>
@@ -103,9 +111,119 @@
         </section>
     </main>
 
+    <section id="admin-panel" class="admin-panel" aria-label="Panel administrativo" hidden>
+        <div id="admin-login" class="admin-card admin-login">
+            <button class="admin-volver" type="button" data-cerrar-admin>Volver al sitio</button>
+            <h1>Acceso administrativo</h1>
+            <p class="admin-descripcion">Ingresá la contraseña para consultar los presupuestos guardados en este dispositivo.</p>
+            <form id="admin-login-form" class="admin-form">
+                <label for="admin-password">Contraseña</label>
+                <input type="password" id="admin-password" name="password" autocomplete="current-password" required>
+                <p id="admin-login-error" class="admin-error" role="alert" aria-live="polite"></p>
+                <button class="btn-enviar" type="submit">Ingresar</button>
+            </form>
+            <p class="admin-aviso">Modo demostración: la contraseña está en el JavaScript y no protege información en un sitio público.</p>
+        </div>
+
+        <div id="admin-dashboard" class="admin-card admin-dashboard" hidden>
+            <div class="admin-encabezado">
+                <div>
+                    <p class="admin-etiqueta">TECNO R.A.</p>
+                    <h1>Presupuestos recibidos</h1>
+                </div>
+                <div class="admin-acciones">
+                    <button id="actualizar-presupuestos" class="admin-boton-secundario" type="button">Actualizar</button>
+                    <button class="admin-boton-secundario" type="button" data-cerrar-admin>Volver al sitio</button>
+                </div>
+            </div>
+            <p class="admin-descripcion">Reparaciones, stock y pedidos almacenados en este dispositivo.</p>
+            <nav class="admin-pestanas" aria-label="Secciones administrativas">
+                <button class="admin-pestana activa" type="button" data-admin-vista="reparaciones" aria-pressed="true">Reparaciones</button>
+                <button class="admin-pestana" type="button" data-admin-vista="stock" aria-pressed="false">Stock</button>
+                <button class="admin-pestana" type="button" data-admin-vista="ventas" aria-pressed="false">Ventas y pedidos</button>
+            </nav>
+
+            <section class="admin-seccion" data-admin-seccion="reparaciones" aria-labelledby="titulo-admin-reparaciones">
+                <h2 id="titulo-admin-reparaciones">Seguimiento de equipos</h2>
+                <p id="admin-error-datos" class="admin-error" role="status" aria-live="polite"></p>
+                <p id="admin-sin-datos" class="admin-sin-datos" hidden>Todavía no hay equipos ingresados. Se mostrarán aquí cuando llegue una consulta del formulario.</p>
+                <div id="admin-tabla-contenedor" class="admin-tabla-contenedor" hidden>
+                    <table class="admin-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Ingreso</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Equipo</th>
+                                <th scope="col">Falla</th>
+                                <th scope="col">Estado actual</th>
+                                <th scope="col">Ticket</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-tabla-presupuestos"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="admin-seccion" data-admin-seccion="stock" aria-labelledby="titulo-admin-stock" hidden>
+                <h2 id="titulo-admin-stock">Inventario de accesorios</h2>
+                <form id="form-producto" class="admin-form admin-form-grid">
+                    <label for="producto-nombre">Producto</label>
+                    <input id="producto-nombre" name="nombre" type="text" placeholder="Cargador USB-C" required>
+                    <label for="producto-categoria">Categoría</label>
+                    <input id="producto-categoria" name="categoria" type="text" placeholder="Cargadores / Auriculares" required>
+                    <label for="producto-precio">Precio</label>
+                    <input id="producto-precio" name="precio" type="number" min="0" step="0.01" placeholder="0" required>
+                    <label for="producto-stock">Cantidad inicial</label>
+                    <input id="producto-stock" name="stock" type="number" min="0" step="1" placeholder="0" required>
+                    <button class="btn-enviar" type="submit">Agregar al stock</button>
+                </form>
+                <p id="admin-stock-mensaje" class="admin-error" role="status" aria-live="polite"></p>
+                <p id="admin-stock-vacio" class="admin-sin-datos" hidden>No hay productos en el inventario todavía.</p>
+                <div id="admin-stock-tabla-contenedor" class="admin-tabla-contenedor" hidden>
+                    <table class="admin-tabla">
+                        <thead><tr><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Precio</th><th scope="col">Existencias</th><th scope="col">Acción</th></tr></thead>
+                        <tbody id="admin-tabla-stock"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="admin-seccion" data-admin-seccion="ventas" aria-labelledby="titulo-admin-ventas" hidden>
+                <h2 id="titulo-admin-ventas">Registrar venta o pedido</h2>
+                <form id="form-venta" class="admin-form admin-form-grid">
+                    <label for="venta-cliente">Cliente</label>
+                    <input id="venta-cliente" name="cliente" type="text" required>
+                    <label for="venta-tipo">Tipo de operación</label>
+                    <select id="venta-tipo" name="tipo" required>
+                        <option value="venta">Venta de accesorio</option>
+                        <option value="pedido">Pedido de accesorio</option>
+                        <option value="google">Servicio: desbloqueo de cuenta Google</option>
+                    </select>
+                    <label for="venta-producto">Producto</label>
+                    <select id="venta-producto" name="producto" required></select>
+                    <label for="venta-cantidad">Cantidad</label>
+                    <input id="venta-cantidad" name="cantidad" type="number" min="1" step="1" value="1" required>
+                    <label for="venta-precio">Precio / importe</label>
+                    <input id="venta-precio" name="precio" type="number" min="0" step="0.01" required>
+                    <label for="venta-notas">Detalle o notas</label>
+                    <input id="venta-notas" name="notas" type="text" placeholder="Opcional">
+                    <button class="btn-enviar" type="submit">Guardar operación</button>
+                </form>
+                <p id="admin-ventas-mensaje" class="admin-error" role="status" aria-live="polite"></p>
+                <p id="admin-ventas-vacio" class="admin-sin-datos" hidden>Aún no hay ventas ni pedidos registrados.</p>
+                <div id="admin-ventas-tabla-contenedor" class="admin-tabla-contenedor" hidden>
+                    <table class="admin-tabla">
+                        <thead><tr><th scope="col">Fecha</th><th scope="col">Cliente</th><th scope="col">Operación</th><th scope="col">Producto / servicio</th><th scope="col">Cantidad</th><th scope="col">Importe</th><th scope="col">Estado</th><th scope="col">Acción</th></tr></thead>
+                        <tbody id="admin-tabla-ventas"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </section>
+
     <!-- FOOTER -->
-    <footer>
+    <footer id="sitio-footer">
         <p>&copy; 2026 TECNO R.A. | Proyecto U.E.G.P. Nº 72 Cacique Pelayo</p>
+        <button id="abrir-admin" class="admin-enlace" type="button">Acceso administración</button>
     </footer>
 
     <!-- Enlace al script de JavaScript -->

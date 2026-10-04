@@ -23,6 +23,10 @@
     box-sizing: border-box;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 html {
     min-width: 320px;
     scroll-behavior: smooth;
@@ -531,6 +535,303 @@ footer p {
     font-size: 0.9rem;
 }
 
+.admin-enlace {
+    min-height: 44px;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
+.admin-enlace:hover,
+.admin-volver:hover {
+    color: var(--azul-marca);
+}
+
+.admin-panel {
+    width: min(100% - 2rem, 1160px);
+    min-height: calc(100svh - 4rem);
+    margin: 0 auto;
+    padding: clamp(2rem, 7vw, 5rem) 0;
+}
+
+.admin-card {
+    border: 1px solid var(--borde);
+    border-radius: 1.4rem;
+    background: #fff;
+    box-shadow: var(--sombra);
+}
+
+.admin-login {
+    width: min(100%, 30rem);
+    max-width: 30rem;
+    margin: clamp(1rem, 8vh, 5rem) auto;
+    padding: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+.admin-volver {
+    margin-bottom: 2rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--texto-suave);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.admin-login h1,
+.admin-dashboard h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    letter-spacing: -0.05em;
+}
+
+.admin-descripcion {
+    margin-bottom: 1.5rem;
+    color: var(--texto-suave);
+}
+
+.admin-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--borde);
+}
+
+.admin-pestana {
+    min-height: 2.8rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.8rem;
+    background: #f3f4fa;
+    color: #535d76;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.admin-pestana:hover,
+.admin-pestana.activa {
+    background: var(--gradiente);
+    box-shadow: 0 6px 16px rgb(87 91 220 / 20%);
+    color: #fff;
+}
+
+.admin-seccion h2 {
+    margin: 1.5rem 0 1rem;
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+    text-align: left;
+}
+
+.admin-form {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.admin-form label {
+    color: #39445f;
+    font-weight: 700;
+}
+
+.admin-form input {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid #dce1ed;
+    border-radius: 0.75rem;
+    outline: none;
+    background: #fbfcff;
+    color: var(--tinta);
+}
+
+.admin-form select {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid #dce1ed;
+    border-radius: 0.75rem;
+    background: #fbfcff;
+    color: var(--tinta);
+}
+
+.admin-form-grid {
+    grid-template-columns: minmax(9rem, 0.7fr) minmax(0, 1.3fr);
+    align-items: center;
+    gap: 0.8rem 1rem;
+    margin: 1.25rem 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 1px solid var(--borde);
+    border-radius: 1rem;
+    background: #fbfcff;
+}
+
+.admin-form-grid .btn-enviar {
+    grid-column: 1 / -1;
+}
+
+.admin-estado-select,
+.admin-stock-cantidad {
+    min-height: 2.5rem;
+    max-width: 100%;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid #dce1ed;
+    border-radius: 0.65rem;
+    background: #fff;
+    color: var(--tinta);
+    font: inherit;
+}
+
+.admin-stock-cantidad {
+    width: 6rem;
+}
+
+.admin-form input:focus {
+    border-color: var(--azul-marca);
+    box-shadow: 0 0 0 4px rgb(56 104 232 / 12%);
+}
+
+.admin-error {
+    min-height: 1.4em;
+    margin: 0;
+    color: #b4233b;
+    font-size: 0.9rem;
+}
+
+.admin-aviso {
+    margin: 1.5rem 0 0;
+    padding: 0.9rem 1rem;
+    border-radius: 0.75rem;
+    background: #fff7e8;
+    color: #73521b;
+    font-size: 0.85rem;
+}
+
+.admin-dashboard {
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.admin-encabezado,
+.admin-acciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.admin-encabezado {
+    margin-bottom: 1rem;
+}
+
+.admin-encabezado h1 {
+    margin-bottom: 0;
+}
+
+.admin-etiqueta {
+    margin-bottom: 0.45rem;
+    color: var(--morado-marca);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.admin-boton-secundario {
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--borde);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--tinta);
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease;
+}
+
+.admin-boton-secundario:hover {
+    border-color: #b8b5ed;
+    background: #f8f7ff;
+}
+
+.admin-sin-datos {
+    margin: 1.5rem 0 0;
+    padding: 1.25rem;
+    border: 1px dashed #c4c8e9;
+    border-radius: 0.9rem;
+    background: #f8f7ff;
+    color: var(--texto-suave);
+    text-align: center;
+}
+
+.admin-tabla-contenedor {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    border: 1px solid var(--borde);
+    border-radius: 0.9rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-tabla {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-tabla th,
+.admin-tabla td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: top;
+}
+
+.admin-tabla th {
+    background: #f6f7fc;
+    color: #46516d;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+.admin-tabla th:last-child,
+.admin-tabla td:last-child {
+    min-width: 8rem;
+}
+
+.admin-tabla td {
+    max-width: 20rem;
+    overflow-wrap: anywhere;
+}
+
+.admin-tabla tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.admin-tabla tbody tr:hover {
+    background: #fafaff;
+}
+
+.admin-dashboard,
+.admin-seccion,
+.admin-tabla-contenedor {
+    min-width: 0;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-estado-select,
+.admin-stock-cantidad,
+.admin-boton-secundario,
+.admin-pestana {
+    touch-action: manipulation;
+}
+
 :focus-visible {
     outline: 3px solid #9a6ce5;
     outline-offset: 4px;
@@ -589,6 +890,150 @@ footer p {
 
     #contacto > h2 {
         margin-bottom: 0.25rem;
+    }
+
+    .admin-encabezado {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-acciones {
+        flex-wrap: wrap;
+    }
+
+    .admin-panel {
+        width: min(100% - 1.5rem, 600px);
+        min-height: calc(100svh - 2rem);
+        padding: 1rem 0 2rem;
+    }
+
+    .admin-dashboard {
+        padding: 1.25rem;
+        border-radius: 1.1rem;
+    }
+
+    .admin-login {
+        margin: 1rem auto;
+    }
+
+    .admin-pestanas {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin: 1rem -0.25rem 1.25rem;
+        padding: 0.25rem 0.25rem 0.85rem;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-pestana {
+        flex: 0 0 auto;
+        min-height: 44px;
+        white-space: nowrap;
+    }
+
+    .admin-form-grid {
+        grid-template-columns: minmax(7rem, 0.7fr) minmax(0, 1.3fr);
+    }
+
+    .admin-tabla {
+        min-width: 680px;
+    }
+
+    .admin-tabla th,
+    .admin-tabla td {
+        padding: 0.75rem;
+    }
+
+    .admin-tabla-contenedor {
+        overflow: visible;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .admin-tabla,
+    .admin-tabla tbody {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-tabla thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .admin-tabla tbody {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    .admin-tabla tbody tr {
+        display: grid;
+        gap: 0;
+        padding: 0.45rem 0.85rem;
+        border: 1px solid var(--borde);
+        border-radius: 0.9rem;
+        background: #fff;
+        box-shadow: 0 8px 20px rgb(42 50 95 / 6%);
+    }
+
+    .admin-tabla tbody tr:last-child td,
+    .admin-tabla tbody td {
+        display: grid;
+        grid-template-columns: minmax(6.5rem, 0.75fr) minmax(0, 1.25fr);
+        gap: 0.65rem;
+        max-width: none;
+        min-width: 0;
+        align-items: start;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid #eff0f6;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-tabla tbody td:last-child {
+        border-bottom: 0;
+    }
+
+    .admin-tabla tbody td::before {
+        color: #59647d;
+        content: attr(data-label);
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .admin-tabla th:last-child,
+    .admin-tabla td:last-child {
+        min-width: 0;
+    }
+
+    .admin-estado-select,
+    .admin-stock-cantidad,
+    .admin-tabla .admin-boton-secundario {
+        width: 100%;
+        min-height: 44px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .admin-panel {
+        width: min(100% - 4rem, 1440px);
+    }
+
+    .admin-dashboard {
+        padding: clamp(2rem, 3vw, 3rem);
+    }
+
+    .admin-form-grid {
+        grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1.45fr);
+    }
+
+    .admin-tabla {
+        min-width: 0;
     }
 }
 
@@ -651,6 +1096,141 @@ footer p {
         width: 2.55rem;
         height: 2.55rem;
         border-radius: 0.85rem;
+    }
+
+    .admin-panel {
+        width: calc(100% - 1rem);
+        padding-top: 0.5rem;
+    }
+
+    .admin-login,
+    .admin-dashboard {
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+
+    .admin-volver {
+        min-height: 44px;
+        margin-bottom: 1.25rem;
+    }
+
+    .admin-encabezado {
+        gap: 0.75rem;
+    }
+
+    .admin-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.45rem;
+    }
+
+    .admin-form-grid label:not(:first-child) {
+        margin-top: 0.5rem;
+    }
+
+    .admin-form-grid .btn-enviar {
+        grid-column: auto;
+    }
+
+    .admin-pestanas {
+        gap: 0.35rem;
+    }
+
+    .admin-pestana {
+        flex: 1 1 auto;
+        padding: 0.55rem 0.65rem;
+        font-size: 0.85rem;
+    }
+
+    .admin-acciones {
+        width: 100%;
+    }
+
+    .admin-acciones button {
+        flex: 1 1 auto;
+        min-height: 44px;
+    }
+
+    .admin-pestanas {
+        margin-right: -0.1rem;
+        margin-left: -0.1rem;
+    }
+
+    .admin-seccion h2 {
+        margin-top: 1rem;
+    }
+
+    .admin-tabla-contenedor {
+        overflow: visible;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .admin-tabla,
+    .admin-tabla tbody {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-tabla thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .admin-tabla tbody {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    .admin-tabla tbody tr {
+        display: grid;
+        gap: 0;
+        padding: 0.45rem 0.85rem;
+        border: 1px solid var(--borde);
+        border-radius: 0.9rem;
+        background: #fff;
+        box-shadow: 0 8px 20px rgb(42 50 95 / 6%);
+    }
+
+    .admin-tabla tbody tr:last-child td,
+    .admin-tabla tbody td {
+        display: grid;
+        grid-template-columns: minmax(6.5rem, 0.75fr) minmax(0, 1.25fr);
+        gap: 0.65rem;
+        max-width: none;
+        min-width: 0;
+        align-items: start;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid #eff0f6;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-tabla tbody td:last-child {
+        border-bottom: 0;
+    }
+
+    .admin-tabla tbody td::before {
+        color: #59647d;
+        content: attr(data-label);
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .admin-tabla th:last-child,
+    .admin-tabla td:last-child {
+        min-width: 0;
+    }
+
+    .admin-estado-select,
+    .admin-stock-cantidad,
+    .admin-tabla .admin-boton-secundario {
+        width: 100%;
+        min-height: 44px;
     }
 }
 
