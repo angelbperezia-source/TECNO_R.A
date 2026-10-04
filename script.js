@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Llamadas a funciones principales (pendientes de completar)
     initMenuResponsive();
     initValidacionFormulario();
-    initCarrusel();
     initAdminPanel();
+    initTienda();
 });
 
 // TODO: Desarrollar lógica para el menú en dispositivos móviles (hamburguesa)
@@ -20,82 +20,6 @@ function initMenuResponsive() {
     console.log("Función initMenuResponsive pendiente de programar...");
 }
 
-function initCarrusel() {
-    const carrusel = document.querySelector("[data-carrusel]");
-
-    if (!carrusel) {
-        return;
-    }
-
-    const pista = carrusel.querySelector(".carrusel-pista");
-    const diapositivas = Array.from(pista.children);
-    const indicadores = Array.from(carrusel.querySelectorAll("[data-carrusel-ir]"));
-    const botonAnterior = carrusel.querySelector("[data-carrusel-anterior]");
-    const botonSiguiente = carrusel.querySelector("[data-carrusel-siguiente]");
-    const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let indiceActual = 0;
-    let temporizador;
-
-    function mostrarDiapositiva(indice) {
-        indiceActual = (indice + diapositivas.length) % diapositivas.length;
-        pista.style.transform = `translateX(-${indiceActual * (100 / diapositivas.length)}%)`;
-
-        indicadores.forEach((indicador, posicion) => {
-            const estaActivo = posicion === indiceActual;
-            indicador.classList.toggle("activo", estaActivo);
-
-            if (estaActivo) {
-                indicador.setAttribute("aria-current", "true");
-            } else {
-                indicador.removeAttribute("aria-current");
-            }
-        });
-    }
-
-    function detenerAvanceAutomatico() {
-        window.clearInterval(temporizador);
-    }
-
-    function iniciarAvanceAutomatico() {
-        detenerAvanceAutomatico();
-
-        if (!movimientoReducido.matches && !document.hidden) {
-            temporizador = window.setInterval(() => {
-                mostrarDiapositiva(indiceActual + 1);
-            }, 4000);
-        }
-    }
-
-    botonAnterior.addEventListener("click", () => {
-        mostrarDiapositiva(indiceActual - 1);
-        iniciarAvanceAutomatico();
-    });
-
-    botonSiguiente.addEventListener("click", () => {
-        mostrarDiapositiva(indiceActual + 1);
-        iniciarAvanceAutomatico();
-    });
-
-    indicadores.forEach((indicador) => {
-        indicador.addEventListener("click", () => {
-            mostrarDiapositiva(Number(indicador.dataset.carruselIr));
-            iniciarAvanceAutomatico();
-        });
-    });
-
-    carrusel.addEventListener("mouseenter", detenerAvanceAutomatico);
-    carrusel.addEventListener("mouseleave", iniciarAvanceAutomatico);
-    carrusel.addEventListener("focusin", detenerAvanceAutomatico);
-    carrusel.addEventListener("focusout", (evento) => {
-        if (!carrusel.contains(evento.relatedTarget)) {
-            iniciarAvanceAutomatico();
-        }
-    });
-    document.addEventListener("visibilitychange", iniciarAvanceAutomatico);
-    movimientoReducido.addEventListener("change", iniciarAvanceAutomatico);
-
-    iniciarAvanceAutomatico();
-}
 function initValidacionFormulario() {
     const formulario = document.getElementById("form-presupuesto");
 
@@ -158,6 +82,11 @@ function initAdminPanel() {
     const campoClave = document.getElementById("admin-password");
     const mensajeLogin = document.getElementById("admin-login-error");
     const dashboard = document.getElementById("admin-dashboard");
+
+    if (!panel || !botonAbrir || !login || !formularioLogin || !dashboard) {
+        return;
+    }
+
     const estadosReparacion = ["Recibido", "En diagnóstico", "Esperando repuesto", "En reparación", "Listo para retirar", "Entregado"];
     const claveReparaciones = "tecno_presupuestos";
     const claveStock = "tecno_stock";
@@ -644,4 +573,223 @@ function initAdminPanel() {
         renderizarVentas();
         renderizarStock();
     });
+}
+
+function seleccionarIconoProducto(producto) {
+    const descripcion = `${producto.nombre || ""} ${producto.categoria || ""}`.toLocaleLowerCase("es");
+
+    if (descripcion.includes("auricular") || descripcion.includes("audio")) return "🎧";
+    if (descripcion.includes("cargador")) return "🔌";
+    if (descripcion.includes("cable")) return "🔗";
+    if (descripcion.includes("funda")) return "📱";
+    if (descripcion.includes("vidrio") || descripcion.includes("protección")) return "🛡️";
+    if (descripcion.includes("batería") || descripcion.includes("powerbank")) return "🔋";
+    return "📦";
+}
+
+function initTienda() {
+    const contenedorProductos = document.getElementById("tienda-productos");
+    const listaCarrito = document.getElementById("carrito-lista");
+    const numeroCarrito = document.getElementById("tienda-carrito-cantidad");
+    const botonPedido = document.getElementById("enviar-pedido-whatsapp");
+
+    if (!contenedorProductos || !listaCarrito || !numeroCarrito || !botonPedido) {
+        return;
+    }
+
+    const catalogoInicial = [
+        { id: "demo-cargador-usbc", nombre: "Cargador USB-C", categoria: "Cargadores", icono: "🔌" },
+        { id: "demo-cable-usbc", nombre: "Cable USB-C", categoria: "Cables", icono: "🔗" },
+        { id: "demo-auriculares", nombre: "Auriculares", categoria: "Audio", icono: "🎧" },
+        { id: "demo-vidrio-templado", nombre: "Vidrio templado", categoria: "Protección", icono: "🛡️" },
+        { id: "demo-funda", nombre: "Funda para celular", categoria: "Protección", icono: "📱" },
+        { id: "demo-powerbank", nombre: "Batería portátil", categoria: "Energía", icono: "🔋" }
+    ];
+    let catalogoGuardado = null;
+    let inventario = [];
+    let errorLecturaCatalogo = false;
+
+    try {
+        catalogoGuardado = localStorage.getItem("tecno_stock");
+        const datos = catalogoGuardado ? JSON.parse(catalogoGuardado) : [];
+        inventario = Array.isArray(datos) ? datos : [];
+    } catch (error) {
+        errorLecturaCatalogo = true;
+        console.warn("No se pudo leer el inventario; se mostrará el catálogo básico.", error);
+    }
+
+    const productos = inventario.length > 0
+        ? inventario.map((producto) => ({
+            ...producto,
+            id: String(producto.id),
+            precio: Number.isFinite(Number(producto.precio)) && Number(producto.precio) > 0
+                ? Number(producto.precio)
+                : null,
+            stock: Math.max(0, Number(producto.stock) || 0),
+            icono: producto.icono || seleccionarIconoProducto(producto)
+        }))
+        : catalogoInicial.map((producto) => ({ ...producto, precio: null, stock: null }));
+    const productosVisibles = contenedorProductos.dataset.modo === "destacados"
+        ? productos.slice(0, 3)
+        : productos;
+
+    let carrito = [];
+    if (!errorLecturaCatalogo) {
+        try {
+            const guardado = JSON.parse(localStorage.getItem("tecno_carrito") || "[]");
+            carrito = Array.isArray(guardado)
+                ? guardado.filter((item) => productos.some((producto) => producto.id === String(item.id)) && Number(item.cantidad) > 0)
+                    .map((item) => ({ id: String(item.id), cantidad: Math.floor(Number(item.cantidad)) }))
+                : [];
+        } catch {
+            carrito = [];
+        }
+    }
+
+    function formatearPrecio(producto) {
+        return Number.isFinite(producto.precio)
+            ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(producto.precio)
+            : "Consultar precio";
+    }
+
+    function guardarCarrito() {
+        try {
+            localStorage.setItem("tecno_carrito", JSON.stringify(carrito));
+        } catch (error) {
+            console.warn("No se pudo guardar el carrito en este dispositivo.", error);
+        }
+    }
+
+    function agregarAlCarrito(id) {
+        const producto = productos.find((item) => item.id === id);
+        if (!producto || producto.stock === 0) {
+            return;
+        }
+
+        const existente = carrito.find((item) => item.id === id);
+        if (existente) {
+            if (producto.stock !== null && existente.cantidad >= producto.stock) {
+                return;
+            }
+            existente.cantidad += 1;
+        } else {
+            carrito.push({ id, cantidad: 1 });
+        }
+
+        guardarCarrito();
+        renderizarCarrito();
+    }
+
+    function renderizarProductos() {
+        contenedorProductos.replaceChildren();
+
+        productosVisibles.forEach((producto) => {
+            const tarjeta = document.createElement("article");
+            tarjeta.className = "producto-card";
+
+            const imagen = document.createElement("div");
+            imagen.className = "producto-icono";
+            imagen.setAttribute("aria-hidden", "true");
+            imagen.textContent = producto.icono;
+
+            const categoria = document.createElement("p");
+            categoria.className = "producto-categoria";
+            categoria.textContent = producto.categoria || "Accesorios";
+
+            const nombre = document.createElement("h3");
+            nombre.textContent = producto.nombre;
+
+            const precio = document.createElement("p");
+            precio.className = "producto-precio";
+            precio.textContent = formatearPrecio(producto);
+
+            const disponibilidad = document.createElement("p");
+            disponibilidad.className = "producto-disponibilidad";
+            disponibilidad.textContent = producto.stock === null
+                ? "Consultar disponibilidad"
+                : producto.stock > 0 ? `Disponible: ${producto.stock}` : "Agotado";
+
+            const agregar = document.createElement("button");
+            agregar.className = "producto-agregar";
+            agregar.type = "button";
+            agregar.textContent = producto.stock === 0 ? "Agotado" : "Agregar al pedido";
+            agregar.setAttribute("aria-label", `${agregar.textContent}: ${producto.nombre}`);
+            agregar.disabled = producto.stock === 0;
+            agregar.addEventListener("click", () => agregarAlCarrito(producto.id));
+
+            tarjeta.append(imagen, categoria, nombre, precio, disponibilidad, agregar);
+            contenedorProductos.append(tarjeta);
+        });
+    }
+
+    function renderizarCarrito() {
+        listaCarrito.replaceChildren();
+        const cantidadTotal = carrito.reduce((total, item) => total + item.cantidad, 0);
+        const productosEnCarrito = carrito
+            .map((item) => ({ ...item, producto: productos.find((producto) => producto.id === item.id) }))
+            .filter((item) => item.producto);
+        const botonVacio = document.getElementById("carrito-vacio");
+        const total = document.getElementById("carrito-total");
+        const subtotalConocido = productosEnCarrito.every((item) => Number.isFinite(item.producto.precio));
+
+        numeroCarrito.textContent = String(cantidadTotal);
+        botonVacio.hidden = productosEnCarrito.length > 0;
+        botonPedido.disabled = productosEnCarrito.length === 0;
+        total.hidden = productosEnCarrito.length === 0;
+
+        productosEnCarrito.forEach((item) => {
+            const linea = document.createElement("li");
+            linea.className = "carrito-item";
+
+            const informacion = document.createElement("span");
+            informacion.className = "carrito-item-info";
+            informacion.textContent = `${item.producto.nombre} · ${item.cantidad}`;
+
+            const precio = document.createElement("span");
+            precio.className = "carrito-item-precio";
+            precio.textContent = Number.isFinite(item.producto.precio)
+                ? formatearPrecio({ precio: item.producto.precio * item.cantidad })
+                : "A confirmar";
+
+            const quitar = document.createElement("button");
+            quitar.className = "carrito-quitar";
+            quitar.type = "button";
+            quitar.textContent = "Quitar";
+            quitar.setAttribute("aria-label", `Quitar ${item.producto.nombre} del pedido`);
+            quitar.addEventListener("click", () => {
+                carrito = carrito.filter((producto) => producto.id !== item.id);
+                guardarCarrito();
+                renderizarCarrito();
+            });
+
+            linea.append(informacion, precio, quitar);
+            listaCarrito.append(linea);
+        });
+
+        if (subtotalConocido && productosEnCarrito.length > 0) {
+            const subtotal = productosEnCarrito.reduce((suma, item) => suma + item.producto.precio * item.cantidad, 0);
+            total.textContent = `Subtotal: ${formatearPrecio({ precio: subtotal })}`;
+        } else {
+            total.textContent = "Precio total a confirmar por WhatsApp";
+        }
+    }
+
+    botonPedido.addEventListener("click", () => {
+        const lineasPedido = carrito
+            .map((item) => {
+                const producto = productos.find((elemento) => elemento.id === item.id);
+                return producto ? `• ${producto.nombre} x${item.cantidad}` : null;
+            })
+            .filter(Boolean);
+
+        if (lineasPedido.length === 0) {
+            return;
+        }
+
+        const mensaje = encodeURIComponent(`Hola, quiero consultar por este pedido de TECNO R.A.:\n${lineasPedido.join("\n")}\n¿Me confirman precio y disponibilidad?`);
+        window.open(`https://wa.me/5493624542645?text=${mensaje}`, "_blank", "noopener,noreferrer");
+    });
+
+    renderizarProductos();
+    renderizarCarrito();
 }

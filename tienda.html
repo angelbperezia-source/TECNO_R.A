@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Tienda de accesorios para celulares de TECNO R.A. Consultá productos y disponibilidad por WhatsApp.">
+    <meta name="theme-color" content="#f7f8fd">
+    <title>TECNO R.A. | Tienda de accesorios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav id="navbar" aria-label="Navegación principal">
+            <a class="logo logo-enlace" href="index.html" aria-label="TECNO R.A. - Inicio"><span>TECNO R.A</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="index.html#servicios">Servicios</a></li>
+                <li><a href="#tienda">Tienda</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="sitio-publico">
+        <section id="tienda" aria-labelledby="titulo-tienda">
+            <div class="tienda-encabezado tienda-encabezado-pagina">
+                <div>
+                    <p class="tienda-etiqueta">TECNO R.A. STORE</p>
+                    <h1 id="titulo-tienda">Accesorios para tu celular</h1>
+                    <p>Explorá el catálogo, agregá lo que necesitás al pedido y consultá por WhatsApp. Confirmamos precio y disponibilidad antes de coordinar.</p>
+                </div>
+                <span class="tienda-carrito-resumen" aria-label="Tu carrito">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.2" fill="currentColor"/><circle cx="18" cy="20" r="1.2" fill="currentColor"/></svg>
+                    <span id="tienda-carrito-cantidad" aria-live="polite">0</span>
+                </span>
+            </div>
+            <div class="tienda-layout tienda-layout-completa">
+                <div id="tienda-productos" class="tienda-productos" data-modo="completo" aria-live="polite"></div>
+                <aside class="tienda-carrito" aria-labelledby="titulo-carrito">
+                    <h2 id="titulo-carrito">Tu pedido</h2>
+                    <p id="carrito-vacio" class="carrito-vacio">Todavía no agregaste productos.</p>
+                    <ul id="carrito-lista" class="carrito-lista"></ul>
+                    <p id="carrito-total" class="carrito-total" hidden></p>
+                    <button id="enviar-pedido-whatsapp" class="btn-enviar" type="button" disabled>Consultar por WhatsApp</button>
+                    <p class="tienda-nota">El pedido es una consulta; coordinamos stock, precio y entrega por mensaje.</p>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 TECNO R.A. | Proyecto U.E.G.P. Nº 72 Cacique Pelayo</p>
+        <a class="tienda-volver" href="index.html">Volver al inicio</a>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
