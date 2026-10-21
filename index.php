@@ -1,3 +1,3 @@
 <?php
-require __DIR__ . "/angel.php";
+require __DIR__ . "/index.html";
 ?>
