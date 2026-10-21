@@ -117,7 +117,7 @@ function iniciar() {
     detectarSoporte();
 
     // Cada módulo se inicia por separado: si uno falla, el resto sigue funcionando.
-    [initMenuResponsive, initValidacionFormulario, initAdminPanel, initTienda, initAnimaciones].forEach(function (inicializar) {
+    [initMenuResponsive, initValidacionFormulario, initTienda, initAnimaciones, initAdminPanel].forEach(function (inicializar) {
         try {
             inicializar();
         } catch (error) {
@@ -304,7 +304,6 @@ function initAdminPanel() {
     var claveReparaciones = "tecno_presupuestos";
     var claveStock = "tecno_stock";
     var claveVentas = "tecno_ventas";
-    var claveAdmin = "admin123";
     var posicionPrevia = 0;
 
     function enfocar(elemento) {
@@ -370,7 +369,21 @@ function initAdminPanel() {
             : "—";
     }
 
-    function volverAlSitio() {
+    async function volverAlSitio() {
+        if (!dashboard.hidden) {
+            try {
+                var respuesta = await fetch("logout.php", { method: "POST" });
+                if (!respuesta.ok) {
+                    throw new Error("No se pudo cerrar la sesión administrativa.");
+                }
+            } catch (error) {
+                console.error("No se pudo cerrar la sesión administrativa:", error);
+                document.getElementById("admin-error-datos").textContent =
+                    "No se pudo cerrar la sesión. Verificá la conexión e intentá nuevamente.";
+                return;
+            }
+        }
+
         panel.hidden = true;
         elementosPublicos.forEach(function (elemento) {
             elemento.hidden = false;
@@ -669,19 +682,44 @@ function initAdminPanel() {
         boton.addEventListener("click", volverAlSitio);
     });
 
-    formularioLogin.addEventListener("submit", function (evento) {
+    formularioLogin.addEventListener("submit", async function (evento) {
         evento.preventDefault();
 
-        if (campoClave.value !== claveAdmin) {
-            mensajeLogin.textContent = "Contraseña incorrecta. Intentá nuevamente.";
-            campoClave.select();
-            return;
-        }
-
+        var botonIngresar = formularioLogin.querySelector('button[type="submit"]');
+        botonIngresar.disabled = true;
         mensajeLogin.textContent = "";
-        login.hidden = true;
-        dashboard.hidden = false;
-        renderizarVistaActual("reparaciones");
+
+        try {
+            var respuesta = await fetch("login.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: campoClave.value })
+            });
+
+            if (respuesta.status === 401) {
+                mensajeLogin.textContent = "Contraseña incorrecta. Intentá nuevamente.";
+                campoClave.select();
+                return;
+            }
+
+            if (!respuesta.ok) {
+                throw new Error("El servidor no pudo verificar el acceso.");
+            }
+
+            var resultado = await respuesta.json();
+            if (!resultado || resultado.ok !== true) {
+                throw new Error("El servidor devolvió una respuesta de acceso no válida.");
+            }
+
+            login.hidden = true;
+            dashboard.hidden = false;
+            renderizarVistaActual("reparaciones");
+        } catch (error) {
+            console.error("No se pudo verificar el acceso administrativo:", error);
+            mensajeLogin.textContent = "No se pudo verificar el acceso. Revisá la conexión e intentá nuevamente.";
+        } finally {
+            botonIngresar.disabled = false;
+        }
     });
 
     document.querySelectorAll("[data-admin-vista]").forEach(function (boton) {
@@ -867,45 +905,11 @@ function initTienda() {
         return;
     }
 
-    var catalogoInicial = [
-        { id: "demo-cargador-usbc", nombre: "Cargador USB-C", categoria: "Cargadores", icono: "🔌" },
-        { id: "demo-cable-usbc", nombre: "Cable USB-C", categoria: "Cables", icono: "🔗" },
-        { id: "demo-auriculares", nombre: "Auriculares", categoria: "Audio", icono: "🎧" },
-        { id: "demo-vidrio-templado", nombre: "Vidrio templado", categoria: "Protección", icono: "🛡️" },
-        { id: "demo-funda", nombre: "Funda para celular", categoria: "Protección", icono: "📱" },
-        { id: "demo-powerbank", nombre: "Batería portátil", categoria: "Energía", icono: "🔋" }
-    ];
-    var inventario = [];
-
-    try {
-        var catalogoGuardado = localStorage.getItem("tecno_stock");
-        var datos = catalogoGuardado ? JSON.parse(catalogoGuardado) : [];
-        inventario = Array.isArray(datos)
-            ? datos.filter(function (item) {
-                return item && typeof item === "object";
-            })
-            : [];
-    } catch (error) {
-        console.warn("No se pudo leer el inventario; se mostrará el catálogo básico.", error);
-    }
-
-    var productos = inventario.length > 0
-        ? inventario.map(function (producto) {
-            return Object.assign({}, producto, {
-                id: String(producto.id),
-                precio: isFinite(Number(producto.precio)) && Number(producto.precio) > 0
-                    ? Number(producto.precio)
-                    : null,
-                stock: Math.max(0, Number(producto.stock) || 0),
-                icono: producto.icono || seleccionarIconoProducto(producto)
-            });
-        })
-        : catalogoInicial.map(function (producto) {
-            return Object.assign({}, producto, { precio: null, stock: null });
-        });
-    var productosVisibles = contenedorProductos.dataset.modo === "destacados"
-        ? productos.slice(0, 3)
-        : productos;
+    var productos = [];
+    var carrito = [];
+    var errorCatalogo = "";
+    var catalogoCargado = false;
+    var cargandoCatalogo = false;
 
     function buscarProducto(id) {
         return productos.find(function (producto) {
@@ -941,13 +945,12 @@ function initTienda() {
         }
     }
 
-    var carrito = leerCarritoGuardado();
     var ultimoAgregado = null;
     var cantidadAnterior = null;
 
     function formatearPrecio(producto) {
         return isFinite(producto.precio) && producto.precio !== null
-            ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(producto.precio)
+            ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 2 }).format(producto.precio)
             : "Consultar precio";
     }
 
@@ -1009,6 +1012,17 @@ function initTienda() {
 
     function renderizarProductos() {
         contenedorProductos.replaceChildren();
+        var productosVisibles = contenedorProductos.dataset.modo === "destacados"
+            ? productos.slice(0, 3)
+            : productos;
+
+        if (productosVisibles.length === 0) {
+            var mensajeCatalogo = document.createElement("p");
+            mensajeCatalogo.className = "tienda-mensaje-catalogo";
+            mensajeCatalogo.textContent = errorCatalogo || "Todavía no hay productos publicados en la tienda.";
+            contenedorProductos.append(mensajeCatalogo);
+            return;
+        }
 
         productosVisibles.forEach(function (producto) {
             var tarjeta = document.createElement("article");
@@ -1155,8 +1169,57 @@ function initTienda() {
 
     // Mantiene el carrito al día si cambia en otra pestaña o al volver con el botón "atrás"
     function sincronizarCarrito() {
+        if (!catalogoCargado) {
+            return;
+        }
         carrito = leerCarritoGuardado();
         renderizarCarrito();
+    }
+
+    function cargarCatalogo() {
+        if (cargandoCatalogo) {
+            return;
+        }
+
+        cargandoCatalogo = true;
+        fetch("listar.php", { cache: "no-store" })
+            .then(function (respuesta) {
+                return respuesta.json().then(function (datos) {
+                    if (!respuesta.ok) {
+                        throw new Error(datos.error || "No se pudo cargar el catálogo.");
+                    }
+                    if (!Array.isArray(datos)) {
+                        throw new Error(datos.error || "El servidor devolvió un catálogo inválido.");
+                    }
+                    return datos;
+                });
+            })
+            .then(function (datos) {
+                productos = datos.map(function (producto) {
+                    return {
+                        id: String(producto.id),
+                        nombre: String(producto.nombre || ""),
+                        categoria: producto.categoria || "Accesorios",
+                        precio: Number(producto.precio),
+                        stock: Math.max(0, Number(producto.stock) || 0),
+                        icono: seleccionarIconoProducto(producto)
+                    };
+                });
+                catalogoCargado = true;
+                errorCatalogo = "";
+                carrito = leerCarritoGuardado();
+                guardarCarrito();
+                renderizarProductos();
+                renderizarCarrito();
+            })
+            .catch(function (error) {
+                console.error("No se pudo actualizar el catálogo de la tienda:", error);
+                errorCatalogo = "No se pudo cargar el catálogo. Revisá la conexión con el servidor e intentá nuevamente.";
+                renderizarProductos();
+            })
+            .then(function () {
+                cargandoCatalogo = false;
+            });
     }
 
     window.addEventListener("storage", function (evento) {
@@ -1165,14 +1228,21 @@ function initTienda() {
         }
     });
 
-    window.addEventListener("pageshow", function (evento) {
-        if (evento.persisted) {
-            sincronizarCarrito();
+    window.addEventListener("pageshow", function () {
+        cargarCatalogo();
+    });
+
+    window.addEventListener("focus", cargarCatalogo);
+    document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) {
+            cargarCatalogo();
         }
     });
+    window.setInterval(cargarCatalogo, 30000);
 
     renderizarProductos();
     renderizarCarrito();
+    cargarCatalogo();
 }
 
 // ---------- Animaciones de aparición al hacer scroll ----------

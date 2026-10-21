@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Servicio profesional de reparación de celulares TECNO R.A.">
-    <meta name="theme-color" content="#f7f8fd">
+    <meta name="theme-color" content="#070b1a">
     <title>TECNO R.A. | Servicio de reparación profesional</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,7 @@
                 <li><a href="#servicios">Servicios</a></li>
                 <li><a href="#tienda">Tienda</a></li>
                 <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#ubicacion">Ubicación</a></li>
             </ul>
         </nav>
     </header>
@@ -33,9 +34,23 @@
     <main id="sitio-publico">
         <!-- SECCIÓN INICIO / HERO -->
         <section id="inicio">
-            <h1>Servicio de reparación profesional</h1>
-            <p>Soluciones rápidas y garantizadas para tu dispositivo.</p>
-            <a href="#contacto" class="btn-principal">Pedir Presupuesto</a>
+            <div class="hero-texto">
+                <h1>Servicio de reparación profesional</h1>
+                <p>Soluciones rápidas y garantizadas para tu dispositivo.</p>
+                <a href="#contacto" class="btn-principal">Pedir Presupuesto</a>
+            </div>
+            <div class="equipo" aria-hidden="true">
+                <div class="equipo-pantalla">
+                    <p class="equipo-titulo">Seguimiento de tu equipo</p>
+                    <ol class="equipo-pasos">
+                        <li class="hecho">Recibido</li>
+                        <li class="hecho">Diagnóstico</li>
+                        <li class="activo">En reparación</li>
+                        <li>Listo para retirar</li>
+                    </ol>
+                    <p class="equipo-pie">Cada equipo recibe un ticket de seguimiento.</p>
+                </div>
+            </div>
         </section>
 
         <!-- SECCIÓN SERVICIOS -->
@@ -65,6 +80,18 @@
                     <span class="card-tienda-flecha" aria-hidden="true">→</span>
                 </a>
             </div>
+        </section>
+
+        <!-- CÓMO TRABAJAMOS -->
+        <section id="proceso" aria-labelledby="titulo-proceso">
+            <h2 id="titulo-proceso">Cómo es una reparación</h2>
+            <ol class="proceso-pasos">
+                <li><h3>Contanos el problema</h3><p>Por el formulario o por WhatsApp, con el modelo de tu celular.</p></li>
+                <li><h3>Revisamos el equipo</h3><p>Hacemos el diagnóstico para saber qué falla.</p></li>
+                <li><h3>Te pasamos el presupuesto</h3><p>Sabés qué se hace y cuánto cuesta antes de empezar.</p></li>
+                <li><h3>Lo reparamos</h3><p>Cambio de módulo, pin de carga u otra reparación.</p></li>
+                <li><h3>Lo retirás</h3><p>Te avisamos cuando esté listo para retirar.</p></li>
+            </ol>
         </section>
 
         <!-- TIENDA DE ACCESORIOS -->
@@ -120,6 +147,25 @@
                 </ul>
             </div>
         </section>
+
+        <section id="ubicacion" aria-labelledby="titulo-ubicacion">
+            <div class="ubicacion-panel">
+                <div class="ubicacion-encabezado">
+                    <p class="tienda-etiqueta">TECNO R.A. | VISITANOS</p>
+                    <h2 id="titulo-ubicacion">Conocé nuestro local</h2>
+                    <p>Esta es nuestra ubicación. Te esperamos en Pasaje Lima, Fontana, Chaco.</p>
+                    <a class="btn-principal" href="https://maps.app.goo.gl/P2gNM7gkXJTpXyzr9" target="_blank" rel="noopener noreferrer">Cómo llegar <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="ubicacion-mapa">
+                    <iframe
+                        src="https://www.google.com/maps?q=Pasaje%20Lima%2C%20H3514%20Fontana%2C%20Chaco&output=embed"
+                        title="Mapa de la ubicación de TECNO R.A. en Pasaje Lima, Fontana, Chaco"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </section>
     </main>
 
     <section id="admin-panel" class="admin-panel" aria-label="Panel administrativo" hidden>
@@ -133,7 +179,7 @@
                 <p id="admin-login-error" class="admin-error" role="alert" aria-live="polite"></p>
                 <button class="btn-enviar" type="submit">Ingresar</button>
             </form>
-            <p class="admin-aviso">Modo demostración: la contraseña está en el JavaScript y no protege información en un sitio público.</p>
+            <p class="admin-aviso">La contraseña se verifica en el servidor. Los datos de este panel continúan guardándose en este navegador.</p>
         </div>
 
         <div id="admin-dashboard" class="admin-card admin-dashboard" hidden>
@@ -236,6 +282,8 @@
         <p>&copy; 2026 TECNO R.A. | Proyecto U.E.G.P. Nº 72 Cacique Pelayo</p>
         <button id="abrir-admin" class="admin-enlace" type="button">Acceso administración</button>
     </footer>
+
+    <a class="wa-flotante" href="https://wa.me/5493624542645" target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.3-4.9A8.4 8.4 0 1 1 20.5 11.8Z"/><path d="M8.4 8.1c.2-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.7 1.7c.1.2.1.4-.1.6l-.5.6c-.2.2-.2.4-.1.6.5.9 1.3 1.7 2.3 2.2.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.2.4.4 0 .2-.1 1-.7 1.5-.5.5-1.2.7-1.9.6-1-.1-2.2-.6-3.5-1.7-1.1-.9-2-2.1-2.3-3.1-.4-1-.1-2.3.4-3.1Z"/></svg></a>
 
     <!-- Enlace al script de JavaScript -->
     <script src="script.js"></script>
